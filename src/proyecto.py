@@ -1,8 +1,9 @@
 import pandas as pd
 import requests
 from fbprophet import Prophet
-from datetime import datetime
+from matplotlib import pyplot as pl
 
+m = Prophet()
 
 def call(url):
 	''' 
@@ -42,20 +43,26 @@ def convert(url):
 
 	return df
 
-def df_y(url):
+def df_y(url, columna='High'):
 	""" Convierte las columnas de time y precio X a un formato predeterminado
 	 que pide facebook prophet, la fecha como DS y la columna a predecir como y """
-
-
-def predi(url):
-	""" Inicializa facebook prophet y crea el dataframe a x periodos en el futuro """
 	df = convert(url)
-	m = Prophet()
+	new_df = df.rename(columns = {'UNIX_TIME': 'ds', columna : 'y'})
+	new_df = new_df[['ds', 'y']]
+	return new_df
+
+def fit_proph(url,columna='High'):
+	""" Inicializa facebook prophet y crea el dataframe a x periodos en el futuro """
+	global m
+	df = df_y(url,columna)
 	m.fit(df)
-	future = m.make_future_dataframe(periods=30)
+	future = m.make_future_dataframe(periods=10)
+	forecast = m.predict(future)
+	return forecast[['ds', 'yhat', 'yhat_lower','yhat_upper']]
 
-	return future
 
-print(predi('https://min-api.cryptocompare.com/data/v2/histominute?fsym=ETH&tsym=USD&limit=10'))
-print('*'*100)
-print(predi('https://min-api.cryptocompare.com/data/v2/histominute?fsym=BTC&tsym=USD&limit=10'))
+
+
+
+
+print(fit_proph('https://min-api.cryptocompare.com/data/v2/histominute?fsym=ETH&tsym=USD&limit=1000'))
