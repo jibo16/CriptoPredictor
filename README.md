@@ -11,17 +11,21 @@ El proyecto se encuentra en sus etapas iniciales, por lo que todavia faltan much
 
 1. - Cambiar a carpeta de repositorio
 2. - El archivo Proyecto.ipynb es el que debe correrse con Jupyter notebook
-```python
-Version - 3.7.3
 ```
-```Pandas
-Version - 1.0.1
+python
+Version -3.7.3
 ```
-```Numpy
+```
+Pandas
+Version -1.0.1
+```
+```
+Numpy
 Version -1.18.1
 ```
-```Jupyter Notebook
-Version - 3.7.3
+```
+Jupyter Notebook
+Version -3.7.3
 ```
 ## Comentarios
 El proyecto esta listo para su uso, no es necesario modificar ninguna linea de codigo a menos que asi se requiera.
