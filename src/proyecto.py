@@ -4,7 +4,70 @@ from fbprophet import Prophet
 from matplotlib import pyplot as plt
 from fbprophet.diagnostics import performance_metrics
 import statsmodels.api as sm
+from statsmodels.tsa.arima_model import ARMA
+from statsmodels.tsa.arima_model import ARIMA
+from statsmodels.tsa.ar_model import AR
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression as Linreg
+from sklearn.metrics import r2_score
+from sklearn.metrics import mean_squared_error
+import numpy as np
 
+
+
+
+def csv_reader(path):
+	df = pd.read_csv(path)
+	return df
+
+
+
+
+
+def stock_arma(path,columna):
+	df = csv_reader(path)
+
+
+def stock_fab(path, columna):
+	df = pd.read_csv(path)
+	X = df.drop(columns=['Date',columna])
+	y = df[columna]
+	X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2)
+	linreg = Linreg()
+	reg_lin = linreg.fit(X_test,y_test)
+	y_pred = linreg.predict(X_test)
+	error2 = r2_score(y_test,y_pred)
+	error=(y_pred-y_test).abs().sum()/len(y_pred)
+	res = pd.DataFrame({'real': y_test, 'prediccion': y_pred})
+
+	return res, error
+
+
+
+def out_elim(path, columna):
+	""" Eliminar los outliers de x columna """
+	df = csv_reader(path)
+	new_df = df.rename(columns={'Date': 'ds', columna:'y'})
+	new_df = new_df[['ds','y']]
+	stats = new_df.describe(percentiles=[.35,.5,.65]).T
+	stats['IQR'] = stats['65%'] -stats['35%']
+	cutoff = stats['IQR']* 1.5
+	stats['LimiteSuperior'] = stats['65%']+cutoff
+	stats['LimiteInferior'] = (stats['35%']-cutoff)
+	new_df['y'] = new_df['y'].drop(new_df[new_df['y']> stats['LimiteSuperior']['y']].index)
+	new_df = new_df.dropna().reset_index()
+	new_df = new_df.drop(columns='index')
+	return new_df
+
+
+def ar_model(path,columna):
+	df = out_elim(path,columna)
+	train = df['y'][:150]
+	test =df['y'][150:]
+	model = AR(train)
+	model_fit = model.fit()
+	model_predict = model_fit.predict()
+	return model_predict
 def call(url):
 	''' 
 	funcion que llama a la api de cryptocompare
@@ -40,14 +103,6 @@ def crypto_definer(url):
 
 
 
-def auto_reg(url,columna):
-	df = crypto_definer(url)
-	dias = df[columna].loc['2019-11-17':'2020-02-25']
-	dias.plot()
-	dias.show();
-
-
-
 
 def convert(url):
 	df = crypto_definer(url)
@@ -67,24 +122,23 @@ def convert(url):
 	return df
 
 
-#def out_remover(url,columna):
-
-
-
-
-def df_y(url, columna='High'):
-	""" Convierte las columnas de time y precio X a un formato predeterminado
-	 que pide facebook prophet, la fecha como DS y la columna a predecir como y """
-	m = Prophet()
+def ARMA_model(url):
 	df = convert(url)
-	new_df = df.rename(columns = {'UNIX_TIME': 'ds', columna : 'y'})
-	new_df = new_df[['ds', 'y']]
-	m.fit(new_df)
-	future = m.make_future_dataframe(periods=50)
-	forecast = m.predict(future)
-	forecast = forecast[['ds', 'trend', 'yhat', 'yhat_upper', 'yhat_lower', 'trend_upper']] 
-	nuevo = new_df.merge(forecast, on='ds')
-	return nuevo
+	X = df.drop(columns='High')
+	y = df['High']
+	X_train,X_test,y_train,y_test = train_test_split(X,y,test_size=0.2)
+	linreg = Linreg()
+	linreg.fit(X_train,y_train)
+	y_pred = linreg.predict(X_test)
+	error = r2_score(y_test,y_pred)
+	return y_pred
 
 
-print(auto_reg('https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=100', 'High'))
+#def ARIMA_model():
+
+
+
+
+#print(df_y('https://min-api.cryptocompare.com/data/v2/histoday?fsym=BTC&tsym=USD&limit=100'))
+
+print(ar_model('Dow.csv','High'))
