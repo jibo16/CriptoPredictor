@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 # CriptoPredictor
 
 ## Usage
@@ -12,7 +12,7 @@ on Untitled.ipynb
 ### Predictor
 
 ## Introduccion
-Este proyecto, esta pensado para predecir los precios de stocks no tan volubles, como ETF'S o Metales, 
+Este proyecto originalmente esta pensado ser un predictor de Criptomonedas, pero la volatilidad de las mismas hace que los sistemas de prediccion se vuelvan mas complejos, por lo que se opto por hacer una prediccion de mercados mucho mas estables como los ETF'S o los metales, 
 
 ## Informacion
 El proyecto se encuentra en sus etapas iniciales, por lo que todavia faltan muchas mejoras, por lo que las predicciones asi como la informacion pueden estar atrasadas al momento en el que se corra este proyecto.
@@ -42,11 +42,7 @@ Version -3.7.3
 El proyecto esta listo para su uso, no es necesario modificar ninguna linea de codigo a menos que asi se requiera.
 >>>>>>> d0afa70131fb504cbfd83029ece1dc1d006e6f61
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 
-Please make sure to update tests as appropriate.
-<<<<<<< HEAD
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
