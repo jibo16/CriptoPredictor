@@ -1,13 +1,13 @@
 
 
-!
-### Predictor
+![](images/ironhac.png)
+### ProyectoPredictor
 =======
 ## Introduccion
 Este proyecto originalmente esta pensado ser un predictor de Criptomonedas, pero la volatilidad de las mismas hace que los sistemas de prediccion se vuelvan mas complejos, por lo que se opto por hacer una prediccion de mercados mucho mas estables como los ETF'S o los metales, en este caso en particular solamente se estaran usando ETF'S, especificamente DAX y VOO para hacer predicciones de los precios.
 
 ## Informacion
-El proyecto se encuentra en sus etapas iniciales, por lo que todavia faltan muchas mejoras, por lo que las predicciones asi como la informacion pueden estar atrasadas al momento en el que se corra este proyecto, por lo que en un futuro proximo se estara obteniendo informacion periodica de manera automatica
+El proyecto se encuentra en sus etapas iniciales, por lo que todavia faltan muchas mejoras, por lo que las predicciones asi como la informacion pueden estar atrasadas al momento en el que se corra este proyecto, por lo que en un futuro proximo se estara obteniendo informacion periodica de manera automatica, lo importante es ver que modelos se ajustan mas para este tipo de mercados y ajustarlos para que tengan mejores y mas acertadas predicciones cada vez.
 
 
 ## Usage
